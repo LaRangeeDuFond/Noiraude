@@ -5,11 +5,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent (typeof(SphereCollider))] 
 
-public class Noireaude : MonoBehaviour 
+public class Sensor_Noireaude : MonoBehaviour 
 {
 	public float m_fieldAttraction = 15f;
 	public float m_fieldOrientation = 10f;
 	public float m_fieldRepulsion = 5f;
+
 
 	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
 	private Dictionary<int,GameObject> _m_echoAttraction = new Dictionary<int, GameObject> ();
@@ -75,22 +76,44 @@ public class Noireaude : MonoBehaviour
 	}
 
 
+	void ChangeFields (uint _field, float _value)
+	{
+		Debug.Log ("TODO ChangeFields");
+	}
 
-
-
-
-
-
+	public Dictionary<int,GameObject> Get_echoAttraction
+	{
+		get 
+		{
+			return _m_echoAttraction;
+		}
+	}
+	public Dictionary<int,GameObject> Get_echoOrientation
+	{
+		get 
+		{
+			return _m_echoOrientation;
+		}
+	}
+	public Dictionary<int,GameObject> Get_echoRepulsion
+	{
+		get 
+		{
+			return _m_echoRepulsion;
+		}
+	}
 
 	// Use this for initialization
 	void Awake () 
 	{
 		MInitFields ();
+		MInitRigidbody ();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+
 		MUpdateFields ();
 		MUpdateDictionnary ();
 	}
@@ -98,7 +121,7 @@ public class Noireaude : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
-
+		/*
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere (transform.position, m_fieldAttraction);
 
@@ -122,7 +145,7 @@ public class Noireaude : MonoBehaviour
 		{
 			Gizmos.DrawWireSphere (kvp.Value.transform.position, 1f);
 		}
-
+	*/
 
 
 		
