@@ -6,7 +6,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 
 
 	public Vector3 _m_CenterOfMassGlobal = new Vector3 ();
-	private int _m_NbNoireaudes = 100;
+	public int _m_NbNoireaudes = 2;
 
 
 
@@ -19,6 +19,11 @@ public class Groupe_Noireaude : MonoBehaviour {
 	public GameObject m_cible;
 
 	public float m_Speed = 100f;
+
+	public float m_PoucentageOrientation = 0.66f;
+	public float m_PoucentageRepulsion = 0.33f;
+	private float m_PreviousPoucentageOrientation;
+	private float m_PreviousPoucentageRepulsion;
 
 
 
@@ -36,7 +41,6 @@ public class Groupe_Noireaude : MonoBehaviour {
 		}
 	
 	}
-
 
 	void MComputeCenterOfMass ()
 	{
@@ -64,6 +68,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 
 	}
 
+
 	void MSendCenterOfMass()
 	{
 		foreach (Brain_Noireaude monScript in _m_ListBrains)
@@ -88,7 +93,30 @@ public class Groupe_Noireaude : MonoBehaviour {
 		}
 	}
 
+	void MVerifierPourcentages ()
+	{
+		if (m_PreviousPoucentageOrientation != m_PoucentageOrientation)
+		{
+			MSendPourcentages ("m_PourcentageOrientation",m_PoucentageOrientation);
+			m_PreviousPoucentageOrientation = m_PoucentageOrientation;
+		}
 
+		if (m_PreviousPoucentageRepulsion != m_PoucentageRepulsion)
+		{
+			MSendPourcentages ("m_PourcentageRepulsion",m_PoucentageRepulsion);
+			m_PreviousPoucentageRepulsion = m_PoucentageRepulsion;
+		}
+
+	}
+
+	void MSendPourcentages (string _field, float _value)
+	{
+		foreach (Brain_Noireaude monScript in _m_ListBrains)
+		{
+			monScript.MSetPourcentages (_field, _value);
+		}
+
+	}
 
 
 
@@ -99,6 +127,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 		MSendCenterOfMass();
 		MSendCible();
 		MSendSpeed ();
+		MVerifierPourcentages ();
 		transform.position = _m_CenterOfMassGlobal;
 	}
 

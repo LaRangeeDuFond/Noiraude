@@ -11,6 +11,8 @@ public class Sensor_Noireaude : MonoBehaviour
 	public float m_fieldOrientation = 10f;
 	public float m_fieldRepulsion = 5f;
 
+	private float m_PourcentageOrientation = 0.66f;
+	private float m_PourcentageRepulsion = 0.33f;
 
 	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
 	private Dictionary<int,GameObject> _m_echoAttraction = new Dictionary<int, GameObject> ();
@@ -59,10 +61,9 @@ public class Sensor_Noireaude : MonoBehaviour
 	private void MUpdateFields ()
 	{
 		(collider as SphereCollider).radius = m_fieldAttraction;
-		m_fieldOrientation = m_fieldAttraction*0.66f;
-		m_fieldRepulsion = m_fieldAttraction*0.33f;
+		m_fieldOrientation = m_fieldAttraction*m_PourcentageOrientation;
+		m_fieldRepulsion = m_fieldAttraction*m_PourcentageRepulsion;
 	}
-
 
 
 	void OnTriggerEnter(Collider _other)
@@ -75,10 +76,18 @@ public class Sensor_Noireaude : MonoBehaviour
 		_m_echoGlobal.Remove (_other.gameObject.GetInstanceID ());
 	}
 
-
-	void ChangeFields (uint _field, float _value)
+	public void MChangePoucentages (string _field, float _value)
 	{
-		Debug.Log ("TODO ChangeFields");
+		if (_field == "m_PourcentageOrientation")
+		{
+			m_PourcentageOrientation = _value;
+		}
+
+		else if (_field == "m_PourcentageRepulsion")
+		{
+			m_PourcentageRepulsion = _value;
+		}
+
 	}
 
 	public Dictionary<int,GameObject> Get_echoAttraction
@@ -118,10 +127,10 @@ public class Sensor_Noireaude : MonoBehaviour
 		MUpdateDictionnary ();
 	}
 
-
+	/*
 	public void OnDrawGizmos()
 	{
-		/*
+
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere (transform.position, m_fieldAttraction);
 
@@ -145,10 +154,10 @@ public class Sensor_Noireaude : MonoBehaviour
 		{
 			Gizmos.DrawWireSphere (kvp.Value.transform.position, 1f);
 		}
-	*/
+	
 
 
 		
-	}
+	}*/
 
 }
