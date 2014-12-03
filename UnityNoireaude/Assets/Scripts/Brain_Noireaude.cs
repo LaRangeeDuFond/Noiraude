@@ -55,7 +55,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	private Vector3 MComputeRepulse ()
 	{
-		Vector3 VecteurRepulse = new Vector3 ();
+		Vector3 VecteurRepulse = Vector3.zero;
 		Dictionary<int,GameObject> _m_echoRepulsion = _sensor.Get_echoRepulsion;
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoRepulsion)
 		{
@@ -72,7 +72,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	private Vector3 MComputeAttract ()
 	{
-		Vector3 VecteurAttract = new Vector3 ();
+		Vector3 VecteurAttract = Vector3.zero;
 		Dictionary<int,GameObject> _m_echoAttraction = _sensor.Get_echoAttraction;
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoAttraction)
 		{
@@ -115,20 +115,26 @@ public class Brain_Noireaude : MonoBehaviour {
 		_m_Attract.Normalize();
 		_m_AimCible.Normalize();
 
+		/*
 		// Vers le centre de masse
-		_m_Velocity += _m_Cible/100f;
+		_m_Velocity += _m_Cible/100f;*/
 
 		// repulsion
-		_m_Velocity += _m_Repulse/50f;
+		_m_Velocity += _m_Repulse*0.02f;
 
-		// repulsion
-		_m_Velocity += _m_Attract/500f;
+		// attraction
+		_m_Velocity += _m_Attract*0.002f;
 
-		_m_Velocity += _m_AimCible/80f;
+		//attraction Cible
+		_m_Velocity += _m_AimCible*0.0125f;
+
+		//vecteur forward
+		_m_Velocity += transform.forward*0.0125f;
+
+		//division du vecteur
+		_m_Velocity *= 0.25f;
 
 	}
-
-
 	void MMove()
 	{
 		transform.Translate (_m_Velocity*m_Speed*Time.deltaTime);
@@ -141,11 +147,35 @@ public class Brain_Noireaude : MonoBehaviour {
 			transform.position = pos;
 		}*/
 	}
+	private Vector3 MComputeAverageForward ()
+	{
+		Vector3 VecteurRotation = Vector3.zero;
+		Dictionary<int,GameObject> _m_echoOrientation = _sensor.Get_echoOrientation;
+		foreach (KeyValuePair<int, GameObject> kvp in _m_echoOrientation)
+		{
+			Vector3 rotation = kvp.Value.transform.forward;
+			VecteurRotation += rotation ;
+		}
+		VecteurRotation.Normalize ();
+		//Debug.Log ("Normalize ou diviser");
+		return VecteurRotation;
+	}
+	void MAlignForward()
+	{
+
+		Vector3 vectAverageForward = MComputeAverageForward ();
+		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAverageForward);
+		float angle = Vector3.Angle (transform.forward, vectAverageForward);
+		if (angle > 10){angle = 10f;}
+		transform.rotation = Quaternion.AngleAxis(angle,vectAxis);
+
+	}
 
 
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
+		MAlignForward ();
 		MComputeVelocity ();
 		MMove();
 	}

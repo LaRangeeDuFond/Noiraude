@@ -35,7 +35,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 	{
 		for(int i = 0; i<_m_NbNoireaudes ; i++)
 		{
-			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(5*i,0,0),Quaternion.identity) as GameObject;
+			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(0,0,0),Quaternion.identity) as GameObject;
 			_m_ListBrains.Add(maNoireaude.GetComponent<Brain_Noireaude>());
 			_m_ListTransform.Add(maNoireaude.transform);
 		}
