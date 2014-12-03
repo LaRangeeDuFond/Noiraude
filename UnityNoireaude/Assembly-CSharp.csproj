@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Brain_Noireaude.cs" />
      <Compile Include="Assets\Scripts\Groupe_Noireaude.cs" />
+     <Compile Include="Assets\Scripts\ScriptTest.cs" />
      <Compile Include="Assets\Scripts\Sensor_Noireaude.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

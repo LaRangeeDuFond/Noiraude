@@ -126,27 +126,17 @@ public class Brain_Noireaude : MonoBehaviour {
 		_m_Velocity += _m_Attract*0.002f;
 
 		//attraction Cible
-		_m_Velocity += _m_AimCible*0.0125f;
+		//_m_Velocity += _m_AimCible*0.0125f;
 
 		//vecteur forward
 		_m_Velocity += transform.forward*0.0125f;
 
 		//division du vecteur
-		_m_Velocity *= 0.25f;
+		_m_Velocity *= 0.33f;
 
 	}
-	void MMove()
-	{
-		transform.Translate (_m_Velocity*m_Speed*Time.deltaTime);
-		/*
-		//contrainte Y
-		if(transform.position.y!=0f)
-		{
-			Vector3 pos = transform.position;
-			pos.y = 0f;
-			transform.position = pos;
-		}*/
-	}
+	
+
 	private Vector3 MComputeAverageForward ()
 	{
 		Vector3 VecteurRotation = Vector3.zero;
@@ -160,23 +150,65 @@ public class Brain_Noireaude : MonoBehaviour {
 		//Debug.Log ("Normalize ou diviser");
 		return VecteurRotation;
 	}
-	void MAlignForward()
+
+	private Quaternion MAlignAim ()
+	{
+		Vector3 vectAim = _m_Cible - transform.position;
+		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAim);
+		float angle = Vector3.Angle (transform.forward, vectAim);
+		if (angle > 5f){angle = 5f;}
+		Quaternion monQuaternion = Quaternion.AngleAxis(angle,vectAxis);
+		return monQuaternion;
+
+	}
+
+	private Quaternion MAlignForward()
 	{
 
 		Vector3 vectAverageForward = MComputeAverageForward ();
 		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAverageForward);
 		float angle = Vector3.Angle (transform.forward, vectAverageForward);
 		if (angle > 1f){angle = 1f;}
-		transform.rotation = Quaternion.AngleAxis(angle,vectAxis);
+		Quaternion monQuaternion = Quaternion.AngleAxis(angle,vectAxis);
+		return monQuaternion;
 
 	}
 
+	private void MRotation ()
+	{
+		transform.rotation = MAlignAim () * transform.rotation;
+	}
+
+	void MMove()
+	{
+		//transform.Translate (_m_Velocity*m_Speed*Time.deltaTime);
+
+
+		Vector3 nouvellePosition = new Vector3 ();
+		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed*Time.deltaTime;
+		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
+		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
+		
+		transform.position = nouvellePosition;
+
+
+		/*
+		//contrainte Y
+		if(transform.position.y!=0f)
+		{
+			Vector3 pos = transform.position;
+			pos.y = 0f;
+			transform.position = pos;
+		}*/
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		MAlignForward ();
+		MRotation ();
 		MComputeVelocity ();
 		MMove();
 	}
+
+
 }
