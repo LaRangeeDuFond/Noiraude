@@ -166,7 +166,7 @@ public class Brain_Noireaude : MonoBehaviour {
 		Vector3 vectAverageForward = MComputeAverageForward ();
 		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAverageForward);
 		float angle = Vector3.Angle (transform.forward, vectAverageForward);
-		if (angle > 10){angle = 10f;}
+		if (angle > 1f){angle = 1f;}
 		transform.rotation = Quaternion.AngleAxis(angle,vectAxis);
 
 	}
