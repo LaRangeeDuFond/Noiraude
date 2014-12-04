@@ -50,7 +50,6 @@
      <Compile Include="Assets\Scripts\Groupe_Noireaude.cs" />
      <Compile Include="Assets\Scripts\ScriptTest.cs" />
      <Compile Include="Assets\Scripts\Sensor_Noireaude.cs" />
-     <Compile Include="Assets\Scripts\move.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 public class Groupe_Noireaude : MonoBehaviour {
 
@@ -29,9 +30,8 @@ public class Groupe_Noireaude : MonoBehaviour {
 	private float m_PreviousPoucentageOrientation;
 	private float m_PreviousPoucentageRepulsion;
 
-
-
-
+	private List<Thread> m_TreadListe = new List<Thread> ();
+	private int compteurThread = 0;
 
 
 	// Use this for initialization
@@ -122,18 +122,29 @@ public class Groupe_Noireaude : MonoBehaviour {
 	
 	void MMAJ_noiraude(int group, int nb_group)
 	{
-
+		m_TreadListe.Clear();
 		for (int i = group-1 ; i < _m_ListBrains.Count ; i += nb_group)
 		{
-
-			_m_ListBrains[i].MSetSpeed (m_Speed);
-			_m_ListBrains[i].MSetCible (m_cible.transform.position);
-			//_m_ListBrains[i].MSetCenterOfMass (_m_CenterOfMassGlobal);
-
-			_m_ListBrains[i].MSet_misaAJourTrue();
-
+			compteurThread = i;
+			Thread m_Thread = new Thread (MMAJ_UneNoireaude);
+			m_Thread.Start();
+			m_TreadListe.Add (m_Thread);
+			
 		}
 	}
+
+	void MMAJ_UneNoireaude()
+	{
+
+		_m_ListBrains[compteurThread].MSetSpeed (m_Speed);
+		_m_ListBrains[compteurThread].MSetCible (m_cible.transform.position);
+		//_m_ListBrains[i].MSetCenterOfMass (_m_CenterOfMassGlobal);
+		
+		_m_ListBrains[compteurThread].MSet_misaAJourTrue();
+
+
+	}
+
 	// Update is called once per frame
 	void Update () 
 	{

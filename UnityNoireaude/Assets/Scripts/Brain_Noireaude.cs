@@ -161,7 +161,7 @@ public class Brain_Noireaude : MonoBehaviour {
 		Vector3 vectAim = _m_Cible - transform.position;
 		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAim);
 		float angle = Vector3.Angle (transform.forward, vectAim);
-		if (angle > 5f){angle = 5f;}
+		if (angle > 15f){angle = 15f;}
 		Quaternion monQuaternion = Quaternion.AngleAxis(angle,vectAxis);
 		return monQuaternion;
 
