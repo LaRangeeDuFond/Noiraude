@@ -26,12 +26,15 @@ public class ScriptTest : MonoBehaviour {
 		transform.rotation = MAlignAim () * transform.rotation;
 	}
 
+
 	// Update is called once per frame
 	void Update () 
 	{
 	
 		MRotation ();
+
 		Debug.Log (transform.forward);
+
 
 		Vector3 nouvellePosition = new Vector3 ();
 		nouvellePosition.x = transform.position.x + (transform.forward.x)*m_speed*Time.deltaTime;
@@ -40,7 +43,8 @@ public class ScriptTest : MonoBehaviour {
 
 		transform.position = nouvellePosition;
 
-		//transform.Translate (MonVecteurDeMerde*m_speed*Time.deltaTime);
+
+		//transform.Translate (transform.forward*m_speed*Time.deltaTime);
 
 	}
 

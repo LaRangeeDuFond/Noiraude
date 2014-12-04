@@ -14,6 +14,9 @@ public class Sensor_Noireaude : MonoBehaviour
 	private float m_PourcentageOrientation = 0.66f;
 	private float m_PourcentageRepulsion = 0.33f;
 
+	private int _m_DictionnaryLimits = 50;
+	private int compteurDico = 0;
+
 	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
 	private Dictionary<int,GameObject> _m_echoAttraction = new Dictionary<int, GameObject> ();
 	private Dictionary<int,GameObject> _m_echoOrientation = new Dictionary<int, GameObject> ();
@@ -43,16 +46,24 @@ public class Sensor_Noireaude : MonoBehaviour
 			if (distance <= m_fieldRepulsion)
 			{
 				_m_echoRepulsion [kvp.Key] = kvp.Value;
+				compteurDico += 1;
 			}
 
-			if (distance <= m_fieldOrientation && distance > m_fieldRepulsion)
+			if (compteurDico<=_m_DictionnaryLimits)
 			{
-				_m_echoOrientation [kvp.Key] = kvp.Value;
-			}
 
-			if (distance <= m_fieldAttraction && distance > m_fieldOrientation)
-			{
-				_m_echoAttraction [kvp.Key] = kvp.Value;
+				if (distance <= m_fieldOrientation && distance > m_fieldRepulsion)
+				{
+
+					_m_echoOrientation [kvp.Key] = kvp.Value;
+					compteurDico += 1;
+				}
+
+				if (distance <= m_fieldAttraction && distance > m_fieldOrientation)
+				{
+					_m_echoAttraction [kvp.Key] = kvp.Value;
+					compteurDico += 1;
+				}
 			}
 		}
 
@@ -68,12 +79,16 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	void OnTriggerEnter(Collider _other)
 	{
+
+
 		_m_echoGlobal [_other.gameObject.GetInstanceID ()] = _other.gameObject;
+
 	}
 
 	void OnTriggerExit(Collider _other)
 	{
 		_m_echoGlobal.Remove (_other.gameObject.GetInstanceID ());
+
 	}
 
 	public void MChangePoucentages (string _field, float _value)
@@ -89,6 +104,12 @@ public class Sensor_Noireaude : MonoBehaviour
 		}
 
 	}
+
+	public void MChangeDictionnaryLimits (int _value)
+	{
+		_m_DictionnaryLimits = _value;
+	}
+
 
 	public Dictionary<int,GameObject> Get_echoAttraction
 	{

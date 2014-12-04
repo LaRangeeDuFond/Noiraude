@@ -15,7 +15,7 @@ public class Brain_Noireaude : MonoBehaviour {
 	private Vector3 _m_Velocity = new Vector3 ();
 
 	public float m_Speed = 100f;
-
+	private bool m_misaAJour = false;
 
 
 	void MinitSensor()
@@ -49,6 +49,11 @@ public class Brain_Noireaude : MonoBehaviour {
 	public void MSetPourcentages (string _field, float _value)
 	{
 		_sensor.MChangePoucentages (_field,_value);
+	}
+
+	public void MSetDictionnaryLimits (int _value)
+	{
+		_sensor.MChangeDictionnaryLimits (_value);
 	}
 
 
@@ -202,11 +207,25 @@ public class Brain_Noireaude : MonoBehaviour {
 		}*/
 	}
 
+
+
+	public void MSet_misaAJourTrue()
+	{
+		m_misaAJour=true;
+	}
+
+
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		MRotation ();
-		MComputeVelocity ();
+
+		if (m_misaAJour)
+		{
+			MRotation ();
+			MComputeVelocity ();
+			m_misaAJour = false;
+
+		}
 		MMove();
 	}
 
