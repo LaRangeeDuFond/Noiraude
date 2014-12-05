@@ -190,9 +190,12 @@ public class Brain_Noireaude : MonoBehaviour {
 
 
 		Vector3 nouvellePosition = new Vector3 ();
-		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed*Time.deltaTime;
-		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
-		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
+		//WTF
+		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed;//*Time.deltaTime;
+		//WTF
+		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed;//*Time.deltaTime;
+		//WTF
+		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed;//*Time.deltaTime;
 		
 		transform.position = nouvellePosition;
 
