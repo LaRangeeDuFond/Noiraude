@@ -30,8 +30,8 @@ public class Groupe_Noireaude : MonoBehaviour {
 	private float m_PreviousPoucentageOrientation;
 	private float m_PreviousPoucentageRepulsion;
 
-	private List<Thread> m_TreadListe = new List<Thread> ();
-	private int compteurThread = 0;
+	//private List<Thread> m_TreadListe = new List<Thread> ();
+	//private int compteurThread = 0;
 
 
 	// Use this for initialization
@@ -122,25 +122,26 @@ public class Groupe_Noireaude : MonoBehaviour {
 	
 	void MMAJ_noiraude(int group, int nb_group)
 	{
-		m_TreadListe.Clear();
+		//m_TreadListe.Clear();
 		for (int i = group-1 ; i < _m_ListBrains.Count ; i += nb_group)
 		{
-			compteurThread = i;
-			Thread m_Thread = new Thread (MMAJ_UneNoireaude);
-			m_Thread.Start();
-			m_TreadListe.Add (m_Thread);
+			//compteurThread = i;
+			//Thread m_Thread = new Thread (MMAJ_UneNoireaude);
+			//m_Thread.Start();
+			//m_TreadListe.Add (m_Thread);
+			MMAJ_UneNoireaude(i);
 			
 		}
 	}
 
-	void MMAJ_UneNoireaude()
+	void MMAJ_UneNoireaude(int i)
 	{
 
-		_m_ListBrains[compteurThread].MSetSpeed (m_Speed);
-		_m_ListBrains[compteurThread].MSetCible (m_cible.transform.position);
+		_m_ListBrains[i].MSetSpeed (m_Speed);
+		_m_ListBrains[i].MSetCible (m_cible.transform.position);
 		//_m_ListBrains[i].MSetCenterOfMass (_m_CenterOfMassGlobal);
 		
-		_m_ListBrains[compteurThread].MSet_misaAJourTrue();
+		_m_ListBrains[i].MSet_misaAJourTrue();
 
 
 	}
