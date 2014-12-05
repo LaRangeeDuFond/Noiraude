@@ -38,12 +38,19 @@ public class Sensor_Noireaude : MonoBehaviour
 		_m_echoRepulsion.Clear();
 		_m_echoOrientation.Clear();
 		_m_echoAttraction.Clear();
+		compteurDico = 0;
 
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoGlobal)
 		{
-			float distance = Vector3.Distance(kvp.Value.transform.position, transform.position);
+			Vector3 monVector = kvp.Value.transform.position - transform.position;
+			float distance = monVector.x*monVector.x + monVector.y*monVector.y + monVector.z*monVector.z;
 
-			if (distance <= m_fieldRepulsion)
+			float m_fieldRepulsionCARRE = m_fieldRepulsion*m_fieldRepulsion;
+			float m_fieldOrientationCARRE = m_fieldOrientation*m_fieldOrientation;
+			float m_fieldAttractionCARRE = m_fieldAttraction*m_fieldAttraction;
+
+
+			if (distance <= m_fieldRepulsionCARRE)
 			{
 				_m_echoRepulsion [kvp.Key] = kvp.Value;
 				compteurDico += 1;
@@ -52,14 +59,14 @@ public class Sensor_Noireaude : MonoBehaviour
 			if (compteurDico<=_m_DictionnaryLimits)
 			{
 
-				if (distance <= m_fieldOrientation && distance > m_fieldRepulsion)
+				if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
 				{
 
 					_m_echoOrientation [kvp.Key] = kvp.Value;
 					compteurDico += 1;
 				}
 
-				if (distance <= m_fieldAttraction && distance > m_fieldOrientation)
+				if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
 				{
 					_m_echoAttraction [kvp.Key] = kvp.Value;
 					compteurDico += 1;
@@ -133,6 +140,13 @@ public class Sensor_Noireaude : MonoBehaviour
 		}
 	}
 
+	public void M2D ()
+	{
+		if (transform.position.y != 0)
+		{
+			Vector3 newPosition = new Vector3 (transform.position.x, 0, transform.position.z);
+		}
+	}
 	// Use this for initialization
 	void Awake () 
 	{
@@ -146,6 +160,9 @@ public class Sensor_Noireaude : MonoBehaviour
 
 		MUpdateFields ();
 		MUpdateDictionnary ();
+
+
+
 	}
 
 	/*

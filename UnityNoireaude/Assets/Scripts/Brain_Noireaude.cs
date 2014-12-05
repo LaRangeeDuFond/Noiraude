@@ -65,9 +65,9 @@ public class Brain_Noireaude : MonoBehaviour {
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoRepulsion)
 		{
 			Vector3 repulsion = transform.position - kvp.Value.transform.position;
-			float Norme = Vector3.Distance (kvp.Value.transform.position, transform.position);
-			Norme/= _sensor.m_fieldRepulsion;
-			repulsion.Normalize();
+			float Norme = repulsion.x*repulsion.x + repulsion.y*repulsion.y + repulsion.z*repulsion.z;
+			Norme/= _sensor.m_fieldRepulsion*_sensor.m_fieldRepulsion;
+			//repulsion.Normalize();
 
 			VecteurRepulse += repulsion *(1-Norme);
 		}
@@ -173,7 +173,7 @@ public class Brain_Noireaude : MonoBehaviour {
 		Vector3 vectAverageForward = MComputeAverageForward ();
 		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAverageForward);
 		float angle = Vector3.Angle (transform.forward, vectAverageForward);
-		if (angle > 1f){angle = 1f;}
+		if (angle > 10f){angle = 10f;}
 		Quaternion monQuaternion = Quaternion.AngleAxis(angle,vectAxis);
 		return monQuaternion;
 
@@ -215,6 +215,15 @@ public class Brain_Noireaude : MonoBehaviour {
 	}
 
 
+	public void M2D ()
+	{
+		if (transform.position.y != 0)
+		{
+			Vector3 newPosition = new Vector3 (transform.position.x, 0, transform.position.z);
+			transform.position = newPosition;
+		}
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
@@ -227,6 +236,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		}
 		MMove();
+		//M2D ();
 	}
 
 
