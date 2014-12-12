@@ -29,6 +29,10 @@ public class Groupe_Noireaude : MonoBehaviour {
 	public float m_PoucentageRepulsion = 0.33f;
 	private float m_PreviousPoucentageOrientation;
 	private float m_PreviousPoucentageRepulsion;
+	public float m_mcoefAIM = 1f;
+	public float m_mcoefOrient = 1f;
+	private float _mpreviouscoefAIM = 1f;
+	private float _mpreviouscoefOrient = 1f;
 
 	//private List<Thread> m_TreadListe = new List<Thread> ();
 	//private int compteurThread = 0;
@@ -39,11 +43,35 @@ public class Groupe_Noireaude : MonoBehaviour {
 	{
 		for(int i = 0; i<_m_NbNoireaudes ; i++)
 		{
-			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(0f,0f,0f),Quaternion.identity) as GameObject;
+			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(i*3f,0f,0f),Quaternion.identity) as GameObject;
 			_m_ListBrains.Add(maNoireaude.GetComponent<Brain_Noireaude>());
 			_m_ListTransform.Add(maNoireaude.transform);
 		}
 	
+	}
+	void MUpdatecoefAim()
+	{
+		if (m_mcoefAIM != _mpreviouscoefAIM)
+		{
+			foreach (Brain_Noireaude monScript in _m_ListBrains)
+			{
+				monScript.MSetcoefAIM (m_mcoefAIM);
+			}
+			_mpreviouscoefAIM=m_mcoefAIM;				
+		}
+
+	}
+	void MUpdatecoefOrient()
+	{
+		if (m_mcoefOrient != _mpreviouscoefOrient)
+		{
+			foreach (Brain_Noireaude monScript in _m_ListBrains)
+			{
+				monScript.MSetcoefOrient (m_mcoefOrient);
+			}
+			_mpreviouscoefOrient=m_mcoefOrient;			
+		}
+		
 	}
 
 	void MComputeCenterOfMass ()
@@ -150,7 +178,8 @@ public class Groupe_Noireaude : MonoBehaviour {
 	void Update () 
 	{
 		//MComputeCenterOfMass ();
-
+		MUpdatecoefOrient ();
+		MUpdatecoefAim ();
 		MVerify_Send_Pourcentages ();
 		MVerify_Send_DicoLimit ();
 

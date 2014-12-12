@@ -16,6 +16,8 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	public float m_Speed = 100f;
 	private bool m_misaAJour = false;
+	private float m_mcoefAIM = 1f;
+	private float m_mcoefOrient = 1f;
 
 
 	void MinitSensor()
@@ -30,7 +32,14 @@ public class Brain_Noireaude : MonoBehaviour {
 	}
 
 
-
+	public void MSetcoefAIM (float value)
+	{
+		m_mcoefAIM = value;
+	}
+	public void MSetcoefOrient (float value)
+	{
+		m_mcoefOrient = value;
+	}
 	public void MSetCenterOfMass (Vector3 Objectif)
 	{
 		_m_CenterOfMass = Objectif;
@@ -156,10 +165,12 @@ public class Brain_Noireaude : MonoBehaviour {
 		return VecteurRotation;
 	}
 
-	private Quaternion MAlignAim ()
+	private Quaternion MAlignAll ()
 	{
+		Vector3 vectAverageForward = MComputeAverageForward ();
 		Vector3 vectAim = _m_Cible - transform.position;
-		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAim);
+		Vector3 allrotation = (vectAverageForward*m_mcoefOrient) + (vectAim*m_mcoefAIM);
+		Vector3 vectAxis = Vector3.Cross (transform.forward,allrotation);
 		float angle = Vector3.Angle (transform.forward, vectAim);
 		if (angle > 15f){angle = 15f;}
 		Quaternion monQuaternion = Quaternion.AngleAxis(angle,vectAxis);
@@ -181,7 +192,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	private void MRotation ()
 	{
-		transform.rotation = MAlignAim () * transform.rotation;
+		transform.rotation = MAlignAll () * transform.rotation;
 	}
 
 	void MMove()
@@ -191,11 +202,11 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		Vector3 nouvellePosition = new Vector3 ();
 		//WTF
-		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed;//*Time.deltaTime;
+		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed*Time.deltaTime;
 		//WTF
-		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed;//*Time.deltaTime;
+		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
 		//WTF
-		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed;//*Time.deltaTime;
+		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
 		
 		transform.position = nouvellePosition;
 
