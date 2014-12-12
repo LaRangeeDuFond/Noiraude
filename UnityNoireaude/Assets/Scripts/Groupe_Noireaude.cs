@@ -188,7 +188,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 		m_MAJ_compteur=(m_MAJ_compteur==m_nbMAJ_group)?1:m_MAJ_compteur+1;
 
 
-		transform.position = _m_CenterOfMassGlobal;
+		//transform.position = _m_CenterOfMassGlobal;
 
 	}
 

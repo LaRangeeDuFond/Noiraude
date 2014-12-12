@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class Brain_Noireaude : MonoBehaviour {
 
+	private bool activ3D = true;
+
 
 	public Sensor_Noireaude _sensor;
 
@@ -30,7 +32,10 @@ public class Brain_Noireaude : MonoBehaviour {
 		MinitSensor();
 
 	}
-
+	public void MSetactiv3D (bool value)
+	{
+		activ3D = value;
+	}
 
 	public void MSetcoefAIM (float value)
 	{
@@ -120,21 +125,21 @@ public class Brain_Noireaude : MonoBehaviour {
 	private void MComputeVelocity ()
 	{
 		_m_Velocity = Vector3.zero;
-		Vector3 _m_Cible = McomputeAimCenterMass();
+		//Vector3 _m_Cible = McomputeAimCenterMass();
 		Vector3 _m_Repulse = MComputeRepulse ();
 		Vector3 _m_Attract = MComputeAttract ();
-		Vector3 _m_AimCible = McomputeAimCible ();
+		//Vector3 _m_AimCible = McomputeAimCible ();
 		_m_Cible.Normalize();
 		_m_Repulse.Normalize();
 		_m_Attract.Normalize();
-		_m_AimCible.Normalize();
+		//_m_AimCible.Normalize();
 
 		/*
 		// Vers le centre de masse
 		_m_Velocity += _m_Cible/100f;*/
 
 		// repulsion
-		_m_Velocity += _m_Repulse*0.02f;
+		_m_Velocity += _m_Repulse*0.01f;
 
 		// attraction
 		_m_Velocity += _m_Attract*0.002f;
@@ -201,13 +206,13 @@ public class Brain_Noireaude : MonoBehaviour {
 
 
 		Vector3 nouvellePosition = new Vector3 ();
-		//WTF
 		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed*Time.deltaTime;
-		//WTF
-		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
-		//WTF
+		if (activ3D==true)
+		{
+			nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
+		}
 		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
-		
+
 		transform.position = nouvellePosition;
 
 
@@ -228,16 +233,6 @@ public class Brain_Noireaude : MonoBehaviour {
 		m_misaAJour=true;
 	}
 
-
-	public void M2D ()
-	{
-		if (transform.position.y != 0)
-		{
-			Vector3 newPosition = new Vector3 (transform.position.x, 0, transform.position.z);
-			transform.position = newPosition;
-		}
-	}
-
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
@@ -250,7 +245,6 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		}
 		MMove();
-		//M2D ();
 	}
 
 
