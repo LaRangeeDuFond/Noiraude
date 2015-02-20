@@ -1,6 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Sensor.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Brain.cs" Line="27" Column="36" />
+      <File FileName="Assets\Scripts\Sensor.cs" Line="8" Column="1" />
+      <File FileName="Assets\Scripts\Actuator.cs" Line="4" Column="48" />
+      <File FileName="Assets\Scripts\Old\Sensor_Noireaude.cs" Line="17" Column="40" />
+      <File FileName="Assets\Scripts\Sensor_Prox.cs" Line="137" Column="7" />
+      <File FileName="Assets\Scripts\Old\Brain_Noireaude.cs" Line="11" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

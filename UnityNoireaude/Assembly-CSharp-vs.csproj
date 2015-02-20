@@ -46,10 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Brain_Noireaude.cs" />
-     <Compile Include="Assets\Scripts\Groupe_Noireaude.cs" />
-     <Compile Include="Assets\Scripts\ScriptTest.cs" />
-     <Compile Include="Assets\Scripts\Sensor_Noireaude.cs" />
+     <Compile Include="Assets\Scripts\Actuator.cs" />
+     <Compile Include="Assets\Scripts\Brain.cs" />
+     <Compile Include="Assets\Scripts\Old\Brain_Noireaude.cs" />
+     <Compile Include="Assets\Scripts\Old\Groupe_Noireaude.cs" />
+     <Compile Include="Assets\Scripts\Old\ScriptTest.cs" />
+     <Compile Include="Assets\Scripts\Old\Sensor_Noireaude.cs" />
+     <Compile Include="Assets\Scripts\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Sensor_Prox.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
