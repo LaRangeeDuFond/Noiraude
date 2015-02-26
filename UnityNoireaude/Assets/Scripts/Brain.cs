@@ -8,7 +8,7 @@ public abstract class Brain : MonoBehaviour {
 	private Vector3 _m_Cible = new Vector3 ();	
 	private Vector3 _m_Velocity = new Vector3 ();
 	public float m_Speed_Max = 100f;
-	public float m_Speed = m_Speed_Max;
+    public float m_Speed = 100f;
 	private float m_mcoefAIM = 1f;
 	private float m_mcoefOrient = 1f;
 
