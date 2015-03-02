@@ -9,9 +9,7 @@ public class Sensor_Prox_2D : Sensor
     public Master ScriptMaster;
     private List<Transform> _m_ListTransform;
 	private float m_PourcentageOrientation = 0.66f;
-	private float m_PourcentageRepulsion = 0.33f;	
-	private int _m_DictionnaryLimits = 50;
-	private int compteurDico = 0;
+	private float m_PourcentageRepulsion = 0.33f;
 
 
     private Vector3 _m_VectAttraction, _m_VectOrientation , _m_VectRepulsion;
@@ -37,8 +35,55 @@ public class Sensor_Prox_2D : Sensor
         _m_ListTransform.Clear();
         _m_ListTransform = new List<Transform>(ScriptMaster.MSendTransform());
     }
+	public void MInitVectors()
+	{
+		_m_VectAttraction  = Vector3.zero;
+		_m_VectOrientation = Vector3.zero;
+		_m_VectRepulsion   = Vector3.zero;
+	}
+	public void MComputeVectors()
+	{
+		float attract,orient,repuls;
+		int Cattract,Corient,Crepuls;
+		Cattract = 0;
+		Corient = 0;
+		Crepuls = 0;
+		attract  = m_GeneralRadius;
+		attract *= attract;
+		orient   = m_GeneralRadius*m_PourcentageOrientation;
+		orient  *= orient;
+		repuls   = m_GeneralRadius*m_PourcentageRepulsion;
+		repuls  *= repuls;
+		foreach(Transform otherTransform in _m_ListTransform)
+		{
+			//On va chercher la distance au carre de de chaques boid au game object concerne et la comparer
+			//au rayon au carre.
+			//  SQR((otherTransform.position.x - transform.position.x)²+(otherTransform.position.z - transform.position.z)²) < r
+			float dist;
+			dist = (otherTransform.position.x - transform.position.x)*(otherTransform.position.x - transform.position.x)+(otherTransform.position.z - transform.position.z)*(otherTransform.position.z - transform.position.z);
+			if(dist <= attract)
+			{
+				if(dist > orient)
+				{
+					_m_VectAttraction.x += (otherTransform.position.x - transform.position.x);
+					_m_VectAttraction.z += (otherTransform.position.z - transform.position.z);
+				}
+				if(dist <= orient && dist > repuls)
+				{
+					_m_VectOrientation = _m_VectOrientation + otherTransform.forward;
+				}
+				if(dist <= repuls)
+				{
+					_m_VectAttraction.x += (transform.position.x - otherTransform.position.x);
+					_m_VectAttraction.z += (transform.position.z - otherTransform.position.z);
+				}
+			}
+		}
+	}
 	void Update () 
 	{
-
+		MGetTransformList();
+		MInitVectors();
+		MComputeVectors();
 	}
 }
