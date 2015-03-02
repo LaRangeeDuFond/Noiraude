@@ -18,6 +18,27 @@ public class Sensor_Prox_2D : Sensor
     {
         ScriptMaster = MasterGO.GetComponent<Master>();
     }
+    public Vector3 GetVectAttraction
+    {
+        get
+        {
+            return _m_VectAttraction;
+        }
+    }
+    public Vector3 GetVectOrientation
+    {
+        get
+        {
+            return _m_VectOrientation;
+        }
+    }
+    public Vector3 GetVectRepulsion
+    {
+        get
+        {
+            return _m_VectRepulsion;
+        }
+    }
 	public void MChangePoucentages (string _field, float _value)
 	{
 		if (_field == "m_PourcentageOrientation")
@@ -38,16 +59,12 @@ public class Sensor_Prox_2D : Sensor
 	public void MInitVectors()
 	{
 		_m_VectAttraction  = Vector3.zero;
-		_m_VectOrientation = Vector3.zero;
+		_m_VectOrientation = transform.forward;
 		_m_VectRepulsion   = Vector3.zero;
 	}
 	public void MComputeVectors()
 	{
 		float attract,orient,repuls;
-		int Cattract,Corient,Crepuls;
-		Cattract = 0;
-		Corient = 0;
-		Crepuls = 0;
 		attract  = m_GeneralRadius;
 		attract *= attract;
 		orient   = m_GeneralRadius*m_PourcentageOrientation;
@@ -80,6 +97,7 @@ public class Sensor_Prox_2D : Sensor
 			}
 		}
 	}
+
 	void Update () 
 	{
 		MGetTransformList();

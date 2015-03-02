@@ -12,7 +12,7 @@ public class Master : MonoBehaviour {
 
 
 
-	private List<Brain_Noireaude> _m_ListBrains = new List<Brain_Noireaude> ();
+    private List<Actuator_Transform> _m_Atransform = new List<Actuator_Transform>();
 	private List<Transform> _m_ListTransform = new List<Transform> ();
 
 
@@ -42,7 +42,7 @@ public class Master : MonoBehaviour {
 		for(int i = 0; i<_m_NbNoireaudes ; i++)
 		{
 			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(i*3f,0f,0f),Quaternion.identity) as GameObject;
-			_m_ListBrains.Add(maNoireaude.GetComponent<Brain_Noireaude>());
+            _m_Atransform.Add(maNoireaude.GetComponent<Actuator_Transform>());
 			_m_ListTransform.Add(maNoireaude.transform);
 		}
 	
@@ -51,7 +51,7 @@ public class Master : MonoBehaviour {
 	{
 		if (m_mcoefAIM != _mpreviouscoefAIM)
 		{
-			foreach (Brain_Noireaude monScript in _m_ListBrains)
+            foreach (Actuator_Transform monScript in _m_Atransform)
 			{
 				monScript.MSetcoefAIM (m_mcoefAIM);
 			}
@@ -67,7 +67,7 @@ public class Master : MonoBehaviour {
 	{
 		if (m_mcoefOrient != _mpreviouscoefOrient)
 		{
-			foreach (Brain_Noireaude monScript in _m_ListBrains)
+            foreach (Actuator_Transform monScript in _m_Atransform)
 			{
 				monScript.MSetcoefOrient (m_mcoefOrient);
 			}
@@ -101,54 +101,25 @@ public class Master : MonoBehaviour {
 		}
 
 	}
+    void MVerify_Send_Pourcentages()
+    {
+        if (m_PreviousPoucentageOrientation != m_PoucentageOrientation)
+        {
+            MSendPourcentages("m_PourcentageOrientation", m_PoucentageOrientation);
+            m_PreviousPoucentageOrientation = m_PoucentageOrientation;
+        }
 
+        if (m_PreviousPoucentageRepulsion != m_PoucentageRepulsion)
+        {
+            MSendPourcentages("m_PourcentageRepulsion", m_PoucentageRepulsion);
+            m_PreviousPoucentageRepulsion = m_PoucentageRepulsion;
+        }
 
-
-
-
-	void MVerify_Send_Pourcentages ()
-	{
-		if (m_PreviousPoucentageOrientation != m_PoucentageOrientation)
-		{
-			MSendPourcentages ("m_PourcentageOrientation",m_PoucentageOrientation);
-			m_PreviousPoucentageOrientation = m_PoucentageOrientation;
-		}
-
-		if (m_PreviousPoucentageRepulsion != m_PoucentageRepulsion)
-		{
-			MSendPourcentages ("m_PourcentageRepulsion",m_PoucentageRepulsion);
-			m_PreviousPoucentageRepulsion = m_PoucentageRepulsion;
-		}
-
-	}
-
-	void MSendPourcentages (string _field, float _value)
-	{
-		foreach (Brain_Noireaude monScript in _m_ListBrains)
-		{
-			monScript.MSetPourcentages (_field, _value);
-		}
-		
-	}
-
-	void MSendDicoLimit (int _value)
-	{
-		foreach (Brain_Noireaude monScript in _m_ListBrains)
-		{
-			monScript.MSetDictionnaryLimits (_value);
-		}
-		
-	}
-	
+    }
 	void MMAJ_noiraude(int group, int nb_group)
 	{
-		//m_TreadListe.Clear();
-		for (int i = group-1 ; i < _m_ListBrains.Count ; i += nb_group)
+        for (int i = group - 1; i < _m_Atransform.Count; i += nb_group)
 		{
-			//compteurThread = i;
-			//Thread m_Thread = new Thread (MMAJ_UneNoireaude);
-			//m_Thread.Start();
-			//m_TreadListe.Add (m_Thread);
 			MMAJ_UneNoireaude(i);
 			
 		}
@@ -157,12 +128,12 @@ public class Master : MonoBehaviour {
 	void MMAJ_UneNoireaude(int i)
 	{
 
-		_m_ListBrains[i].MSetSpeed (m_Speed);
-		_m_ListBrains[i].MSetCible (m_cible.transform.position);
-		_m_ListBrains[i].MSet_misaAJourTrue();
+        _m_Atransform[i].MSetSpeed(m_Speed);
+        _m_Atransform[i].MSetCible(m_cible.transform.position);
 
 
 	}
+
 
 	// Update is called once per frame
 	void Update () 
