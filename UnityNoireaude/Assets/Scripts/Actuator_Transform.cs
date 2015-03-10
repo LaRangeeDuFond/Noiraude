@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Actuator_Transform : Actuator 
 {
-    public Vector3 _m_Cible;
+    public Transform _m_Cible;
     
     private Vector3 _m_Velocity;
     private float m_Speed;
@@ -19,7 +19,7 @@ public class Actuator_Transform : Actuator
     {
         m_mcoefOrient = value;
     }
-    public void MSetCible(Vector3 Cible)
+    public void MSetCible(Transform Cible)
     {
         _m_Cible = Cible;
     }
@@ -28,6 +28,10 @@ public class Actuator_Transform : Actuator
     {
         m_Speed = speed;
     }
+	public void Awake()
+	{
+		m_Prox_Sensor = GetComponent<Sensor_Prox_2D> ();
+	}
     
     void MMove()
     {
@@ -41,7 +45,7 @@ public class Actuator_Transform : Actuator
     private Quaternion MAlignAll()
     {
         Vector3 vectAverageForward = m_Prox_Sensor.GetVectOrientation;
-        Vector3 vectAim = _m_Cible - transform.position;
+        Vector3 vectAim = _m_Cible.position - transform.position;
         Vector3 allrotation = (vectAverageForward * m_mcoefOrient) + (vectAim * m_mcoefAIM);
         Vector3 vectAxis = Vector3.Cross(transform.forward, allrotation);
         float angle = Vector3.Angle(transform.forward, vectAim);
@@ -58,7 +62,7 @@ public class Actuator_Transform : Actuator
         _m_Velocity = Vector3.zero;
         Vector3 _m_Repulse = m_Prox_Sensor.GetVectRepulsion;
         Vector3 _m_Attract = m_Prox_Sensor.GetVectAttraction;
-        (transform.position - _m_Cible).Normalize();
+        (transform.position - _m_Cible.position).Normalize();
         _m_Repulse.Normalize();
         _m_Attract.Normalize();
         _m_Velocity += _m_Repulse * 0.01f;

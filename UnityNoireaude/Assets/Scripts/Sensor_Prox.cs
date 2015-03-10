@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent (typeof(SphereCollider))] 
 
 public class Sensor_Prox : Sensor 
 {

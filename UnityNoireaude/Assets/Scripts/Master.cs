@@ -11,7 +11,7 @@ public class Master : MonoBehaviour {
 
 
 
-
+	private List<Sensor_Prox_2D> _m_Sensor2D = new List<Sensor_Prox_2D>();
     private List<Actuator_Transform> _m_Atransform = new List<Actuator_Transform>();
 	private List<Transform> _m_ListTransform = new List<Transform> ();
 
@@ -42,7 +42,8 @@ public class Master : MonoBehaviour {
 		for(int i = 0; i<_m_NbNoireaudes ; i++)
 		{
 			GameObject maNoireaude = Instantiate (m_PrefabNoireaude, new Vector3(i*3f,0f,0f),Quaternion.identity) as GameObject;
-            _m_Atransform.Add(maNoireaude.GetComponent<Actuator_Transform>());
+			_m_Sensor2D.Add(maNoireaude.GetComponent<Sensor_Prox_2D>());
+			_m_Atransform.Add(maNoireaude.GetComponent<Actuator_Transform>());
 			_m_ListTransform.Add(maNoireaude.transform);
 		}
 	
@@ -116,6 +117,14 @@ public class Master : MonoBehaviour {
         }
 
     }
+	void MSendPourcentages (string _field, float _value)
+	{
+		foreach (Sensor_Prox_2D monScript in _m_Sensor2D)
+		{
+			monScript.MChangePoucentages (_field, _value);
+		}
+		
+	}
 	void MMAJ_noiraude(int group, int nb_group)
 	{
         for (int i = group - 1; i < _m_Atransform.Count; i += nb_group)
@@ -129,7 +138,7 @@ public class Master : MonoBehaviour {
 	{
 
         _m_Atransform[i].MSetSpeed(m_Speed);
-        _m_Atransform[i].MSetCible(m_cible.transform.position);
+        _m_Atransform[i].MSetCible(m_cible.transform);
 
 
 	}
@@ -142,8 +151,6 @@ public class Master : MonoBehaviour {
 		MUpdatecoefOrient ();
 		MUpdatecoefAim ();
 		MVerify_Send_Pourcentages ();
-
-
 		MMAJ_noiraude(m_MAJ_compteur,m_nbMAJ_group);
 		m_MAJ_compteur=(m_MAJ_compteur==m_nbMAJ_group)?1:m_MAJ_compteur+1;
 
