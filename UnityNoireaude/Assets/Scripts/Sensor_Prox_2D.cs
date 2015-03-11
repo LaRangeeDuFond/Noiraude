@@ -4,20 +4,24 @@ using System.Collections.Generic;
 
 public class Sensor_Prox_2D : Sensor 
 {
-	public float m_GeneralRadius = 15f;
+	public float m_GeneralRadius = 5f;
     public GameObject MasterGO;
     public Master ScriptMaster;
-    private List<Transform> _m_ListTransform;
+    public List<Transform> _m_ListTransform;
 	private float m_PourcentageOrientation = 0.66f;
 	private float m_PourcentageRepulsion = 0.33f;
 
 
     private Vector3 _m_VectAttraction, _m_VectOrientation , _m_VectRepulsion;
     
-    void Awake()
+    void Start()
     {
         ScriptMaster = MasterGO.GetComponent<Master>();
     }
+	public void SetMasterGO(GameObject master)
+	{
+		MasterGO = master;
+	}
     public Vector3 GetVectAttraction
     {
         get
@@ -54,7 +58,7 @@ public class Sensor_Prox_2D : Sensor
     public void MGetTransformList()
     {
         _m_ListTransform.Clear();
-        _m_ListTransform = new List<Transform>(ScriptMaster.MSendTransform());
+        _m_ListTransform = new List<Transform>(ScriptMaster._m_ListTransform);
     }
 	public void MInitVectors()
 	{
@@ -77,7 +81,7 @@ public class Sensor_Prox_2D : Sensor
 			//au rayon au carre.
 			//  SQR((otherTransform.position.x - transform.position.x)²+(otherTransform.position.z - transform.position.z)²) < r
 			float dist;
-			dist = (otherTransform.position.x - transform.position.x)*(otherTransform.position.x - transform.position.x)+(otherTransform.position.z - transform.position.z)*(otherTransform.position.z - transform.position.z);
+			dist = (otherTransform.position.x - transform.position.x)*(otherTransform.position.x - transform.position.x)+(otherTransform.position.z - transform.position.z)*(otherTransform.position.z - transform.position.z)+(otherTransform.position.y - transform.position.y)*(otherTransform.position.y - transform.position.y);
 			if(dist <= attract)
 			{
 				if(dist > orient)

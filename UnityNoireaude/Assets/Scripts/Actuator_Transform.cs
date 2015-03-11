@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Actuator_Transform : Actuator 
 {
-    public Transform _m_Cible;
-    
+    public Transform _m_Cible;    
     private Vector3 _m_Velocity;
     private float m_Speed;
     private Sensor_Prox_2D m_Prox_Sensor;
@@ -46,7 +45,13 @@ public class Actuator_Transform : Actuator
     {
         Vector3 vectAverageForward = m_Prox_Sensor.GetVectOrientation;
         Vector3 vectAim = _m_Cible.position - transform.position;
-        Vector3 allrotation = (vectAverageForward * m_mcoefOrient) + (vectAim * m_mcoefAIM);
+        Vector3 allrotation =  (vectAim * m_mcoefAIM);
+		float dist;
+		dist = (_m_Cible.position.x - transform.position.x)*(_m_Cible.position.x - transform.position.x)+(_m_Cible.position.z - transform.position.z)*(_m_Cible.position.z - transform.position.z)+(_m_Cible.position.x - transform.position.x)+(_m_Cible.position.y - transform.position.y)*(_m_Cible.position.y - transform.position.y);
+		if (dist > 10f) 
+		{
+			allrotation += (vectAverageForward * m_mcoefOrient);
+		}
         Vector3 vectAxis = Vector3.Cross(transform.forward, allrotation);
         float angle = Vector3.Angle(transform.forward, vectAim);
         if (angle > 15f) { angle = 15f; }
@@ -65,15 +70,27 @@ public class Actuator_Transform : Actuator
         (transform.position - _m_Cible.position).Normalize();
         _m_Repulse.Normalize();
         _m_Attract.Normalize();
-        _m_Velocity += _m_Repulse * 0.01f;
-        _m_Velocity += _m_Attract * 0.002f;
-        _m_Velocity += transform.forward * 0.0125f;
+        _m_Velocity += _m_Repulse;
+        _m_Velocity += _m_Attract;
+		_m_Velocity += transform.forward;
 
     }
-    void FixedUpdate()
+    void Update()
     {
-        MComputeVelocity();
-        MRotation();
-        MMove();
+		MComputeVelocity();
+		MRotation();
+		float dist;
+		dist = (_m_Cible.position.x - transform.position.x)*(_m_Cible.position.x - transform.position.x)+(_m_Cible.position.z - transform.position.z)*(_m_Cible.position.z - transform.position.z)+(_m_Cible.position.x - transform.position.x)+(_m_Cible.position.y - transform.position.y)*(_m_Cible.position.y - transform.position.y);
+		if (dist > 1f) 
+		{
+			MMove();
+		}
+        
     }
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, 5f*0.33f);
+		
+	}
 }

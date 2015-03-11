@@ -13,7 +13,7 @@ public class Master : MonoBehaviour {
 
 	private List<Sensor_Prox_2D> _m_Sensor2D = new List<Sensor_Prox_2D>();
     private List<Actuator_Transform> _m_Atransform = new List<Actuator_Transform>();
-	private List<Transform> _m_ListTransform = new List<Transform> ();
+	public List<Transform> _m_ListTransform = new List<Transform> ();
 
 
 	public GameObject m_PrefabNoireaude;
@@ -46,6 +46,11 @@ public class Master : MonoBehaviour {
 			_m_Atransform.Add(maNoireaude.GetComponent<Actuator_Transform>());
 			_m_ListTransform.Add(maNoireaude.transform);
 		}
+		foreach (Sensor_Prox_2D sensorProx in _m_Sensor2D)
+		{
+			sensorProx.SetMasterGO(gameObject);
+		}
+
 	
 	}
 	void MUpdatecoefAim()
@@ -60,10 +65,6 @@ public class Master : MonoBehaviour {
 		}
 
 	}
-    public List<Transform> MSendTransform()
-    {
-        return _m_ListTransform; 
-    }
 	void MUpdatecoefOrient()
 	{
 		if (m_mcoefOrient != _mpreviouscoefOrient)
