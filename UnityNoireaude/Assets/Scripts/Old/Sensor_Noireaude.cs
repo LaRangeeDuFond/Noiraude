@@ -13,14 +13,7 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	private float m_PourcentageOrientation = 0.66f;
 	private float m_PourcentageRepulsion = 0.33f;
-
-	private int _m_DictionnaryLimits = 50;
-	private int compteurDico = 0;
-
-	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoAttraction = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoOrientation = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoRepulsion = new Dictionary<int, GameObject> ();
+	public List<Transform> m_Global_transform;
 
 	private void MInitFields ()
 	{
@@ -33,13 +26,15 @@ public class Sensor_Noireaude : MonoBehaviour
 		rigidbody.isKinematic = true;
 	}
 
+	private void MUpdateFields ()
+	{
+		(collider as SphereCollider).radius = m_fieldAttraction;
+		m_fieldOrientation = m_fieldAttraction*m_PourcentageOrientation;
+		m_fieldRepulsion = m_fieldAttraction*m_PourcentageRepulsion;
+	}
+
 	private void MUpdateDictionnary ()
 	{
-		_m_echoRepulsion.Clear();
-		_m_echoOrientation.Clear();
-		_m_echoAttraction.Clear();
-		compteurDico = 0;
-
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoGlobal)
 		{
 			Vector3 monVector = kvp.Value.transform.position - transform.position;
@@ -76,25 +71,16 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	}
 
-	private void MUpdateFields ()
+
+
+
+	void OnTriggerStay(Collider _other)
 	{
-		(collider as SphereCollider).radius = m_fieldAttraction;
-		m_fieldOrientation = m_fieldAttraction*m_PourcentageOrientation;
-		m_fieldRepulsion = m_fieldAttraction*m_PourcentageRepulsion;
-	}
-
-
-	void OnTriggerEnter(Collider _other)
-	{
-
-
-		_m_echoGlobal [_other.gameObject.GetInstanceID ()] = _other.gameObject;
-
-	}
-
-	void OnTriggerExit(Collider _other)
-	{
-		_m_echoGlobal.Remove (_other.gameObject.GetInstanceID ());
+		m_Global_transform.Clear();
+		foreach (Transform _transform in _other) 
+		{
+			m_Global_transform.Add (_transform);
+		}
 
 	}
 
@@ -112,41 +98,6 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	}
 
-	public void MChangeDictionnaryLimits (int _value)
-	{
-		_m_DictionnaryLimits = _value;
-	}
-
-
-	public Dictionary<int,GameObject> Get_echoAttraction
-	{
-		get 
-		{
-			return _m_echoAttraction;
-		}
-	}
-	public Dictionary<int,GameObject> Get_echoOrientation
-	{
-		get 
-		{
-			return _m_echoOrientation;
-		}
-	}
-	public Dictionary<int,GameObject> Get_echoRepulsion
-	{
-		get 
-		{
-			return _m_echoRepulsion;
-		}
-	}
-
-	public void M2D ()
-	{
-		if (transform.position.y != 0)
-		{
-			Vector3 newPosition = new Vector3 (transform.position.x, 0, transform.position.z);
-		}
-	}
 	// Use this for initialization
 	void Awake () 
 	{
@@ -164,38 +115,4 @@ public class Sensor_Noireaude : MonoBehaviour
 
 
 	}
-
-	/*
-	public void OnDrawGizmos()
-	{
-
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere (transform.position, m_fieldAttraction);
-
-		foreach (KeyValuePair<int, GameObject> kvp in _m_echoAttraction) 
-		{
-			Gizmos.DrawWireSphere (kvp.Value.transform.position, 1f);
-		}
-
-		Gizmos.color = Color.magenta;
-		Gizmos.DrawWireSphere (transform.position, m_fieldOrientation);
-
-		foreach (KeyValuePair<int, GameObject> kvp in _m_echoOrientation) 
-		{
-			Gizmos.DrawWireSphere (kvp.Value.transform.position, 1f);
-		}
-
-		Gizmos.color = Color.gray;
-		Gizmos.DrawWireSphere (transform.position, m_fieldRepulsion);
-
-		foreach (KeyValuePair<int, GameObject> kvp in _m_echoRepulsion) 
-		{
-			Gizmos.DrawWireSphere (kvp.Value.transform.position, 1f);
-		}
-	
-
-
-		
-	}*/
-
 }

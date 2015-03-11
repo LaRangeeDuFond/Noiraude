@@ -32,10 +32,6 @@ public class Brain_Noireaude : MonoBehaviour {
 		MinitSensor();
 
 	}
-	public void MSetactiv3D (bool value)
-	{
-		activ3D = value;
-	}
 
 	public void MSetcoefAIM (float value)
 	{
@@ -214,16 +210,6 @@ public class Brain_Noireaude : MonoBehaviour {
 		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
 
 		transform.position = nouvellePosition;
-
-
-		/*
-		//contrainte Y
-		if(transform.position.y!=0f)
-		{
-			Vector3 pos = transform.position;
-			pos.y = 0f;
-			transform.position = pos;
-		}*/
 	}
 
 
