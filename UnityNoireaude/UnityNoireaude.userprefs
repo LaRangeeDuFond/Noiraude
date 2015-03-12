@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Old\Sensor_Noireaude.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Old\Actuator_Noireaude_Idle.cs">
     <Files>
-      <File FileName="Assets\Scripts\Old\Brain_Noireaude.cs" Line="27" Column="21" />
-      <File FileName="Assets\Scripts\Old\Groupe_Noireaude.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Old\Sensor_Noireaude.cs" Line="118" Column="2" />
+      <File FileName="Assets\Scripts\Old\Brain_Noireaude.cs" Line="35" Column="30" />
+      <File FileName="Assets\Scripts\Old\Groupe_Noireaude.cs" Line="120" Column="34" />
+      <File FileName="Assets\Scripts\Old\Sensor_Noireaude.cs" Line="13" Column="47" />
+      <File FileName="Assets\Scripts\Old\Actuator_Noireaude_Idle.cs" Line="21" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Actuator_Transform.cs" />
      <Compile Include="Assets\Scripts\Brain.cs" />
      <Compile Include="Assets\Scripts\Master.cs" />
+     <Compile Include="Assets\Scripts\Old\Actuator_Noireaude_Idle.cs" />
      <Compile Include="Assets\Scripts\Old\Brain_Noireaude.cs" />
      <Compile Include="Assets\Scripts\Old\Groupe_Noireaude.cs" />
      <Compile Include="Assets\Scripts\Old\ScriptTest.cs" />

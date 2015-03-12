@@ -7,13 +7,14 @@ using System.Collections.Generic;
 
 public class Sensor_Noireaude : MonoBehaviour 
 {
-	public float m_fieldAttraction = 15f;
-	public float m_fieldOrientation = 10f;
-	public float m_fieldRepulsion = 5f;
+	public float m_globalRadius = 4f;
 
 	private float m_PourcentageOrientation = 0.66f;
 	private float m_PourcentageRepulsion = 0.33f;
 	public List<Transform> m_Global_transform;
+	public Vector3 _m_VectRepulsion;
+	public Vector3 _m_VectOrientation;
+	public Vector3 _m_VectAttraction;
 
 	private void MInitFields ()
 	{
@@ -28,44 +29,37 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	private void MUpdateFields ()
 	{
-		(collider as SphereCollider).radius = m_fieldAttraction;
-		m_fieldOrientation = m_fieldAttraction*m_PourcentageOrientation;
-		m_fieldRepulsion = m_fieldAttraction*m_PourcentageRepulsion;
+		(collider as SphereCollider).radius = m_globalRadius;
 	}
 
-	private void MUpdateDictionnary ()
+	private void MUpdateVectors ()
 	{
-		foreach (KeyValuePair<int, GameObject> kvp in _m_echoGlobal)
+		_m_VectRepulsion   = Vector3.zero;
+		_m_VectOrientation = Vector3.zero;
+		_m_VectAttraction  = Vector3.zero;
+		foreach (Transform _transform in m_Global_transform)
 		{
-			Vector3 monVector = kvp.Value.transform.position - transform.position;
+			Vector3 monVector = _transform.position - transform.position;
 			float distance = monVector.x*monVector.x + monVector.y*monVector.y + monVector.z*monVector.z;
 
-			float m_fieldRepulsionCARRE = m_fieldRepulsion*m_fieldRepulsion;
-			float m_fieldOrientationCARRE = m_fieldOrientation*m_fieldOrientation;
-			float m_fieldAttractionCARRE = m_fieldAttraction*m_fieldAttraction;
+			float m_fieldRepulsionCARRE   = (m_globalRadius*m_PourcentageRepulsion)   * (m_globalRadius*m_PourcentageRepulsion)   ;
+			float m_fieldOrientationCARRE = (m_globalRadius*m_PourcentageOrientation) * (m_globalRadius*m_PourcentageOrientation) ;
+			float m_fieldAttractionCARRE  =  m_globalRadius*m_globalRadius ;
 
 
 			if (distance <= m_fieldRepulsionCARRE)
 			{
-				_m_echoRepulsion [kvp.Key] = kvp.Value;
-				compteurDico += 1;
+				_m_VectRepulsion += transform.position - _transform.position;
 			}
-
-			if (compteurDico<=_m_DictionnaryLimits)
+			if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
 			{
 
-				if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
-				{
+				_m_VectOrientation += _transform.forward;
+			}
 
-					_m_echoOrientation [kvp.Key] = kvp.Value;
-					compteurDico += 1;
-				}
-
-				if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
-				{
-					_m_echoAttraction [kvp.Key] = kvp.Value;
-					compteurDico += 1;
-				}
+			if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
+			{
+				_m_VectAttraction += monVector;
 			}
 		}
 
@@ -77,11 +71,13 @@ public class Sensor_Noireaude : MonoBehaviour
 	void OnTriggerStay(Collider _other)
 	{
 		m_Global_transform.Clear();
-		foreach (Transform _transform in _other) 
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, m_globalRadius);
+		int i = 0;
+		while (i < hitColliders.Length)
 		{
-			m_Global_transform.Add (_transform);
+			m_Global_transform.Add (hitColliders[i].transform);
+			i++;
 		}
-
 	}
 
 	public void MChangePoucentages (string _field, float _value)
@@ -110,7 +106,7 @@ public class Sensor_Noireaude : MonoBehaviour
 	{
 
 		MUpdateFields ();
-		MUpdateDictionnary ();
+		MUpdateVectors ();
 
 
 
