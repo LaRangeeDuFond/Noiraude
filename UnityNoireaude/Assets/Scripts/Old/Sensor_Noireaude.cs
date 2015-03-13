@@ -7,24 +7,33 @@ using System.Collections.Generic;
 
 public class Sensor_Noireaude : MonoBehaviour 
 {
-	public float m_fieldAttraction = 15f;
-	public float m_fieldOrientation = 10f;
-	public float m_fieldRepulsion = 5f;
-
+	public float m_fieldGlobal             = 15f;
+	private Vector3 _m_VectRepuls          = Vector3.zero;
+	private Vector3 _m_VectAttract         = Vector3.zero;
+	private Vector3 _m_VectOrient          = Vector3.zero;
 	private float m_PourcentageOrientation = 0.66f;
-	private float m_PourcentageRepulsion = 0.33f;
+	private float m_PourcentageRepulsion   = 0.33f;
+	private float m_factRepuls             = 5f;
 
-	private int _m_DictionnaryLimits = 50;
-	private int compteurDico = 0;
 
 	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoAttraction = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoOrientation = new Dictionary<int, GameObject> ();
-	private Dictionary<int,GameObject> _m_echoRepulsion = new Dictionary<int, GameObject> ();
 
+	public float SetFactRepuls
+	{
+		set
+		{
+			this.m_factRepuls = value;
+		}
+	}
 	private void MInitFields ()
 	{
 		(collider as SphereCollider).isTrigger = true;
+	}
+	public void MinitVectors()
+	{
+		_m_VectRepuls  = Vector3.zero;
+		_m_VectAttract = Vector3.zero;
+		_m_VectOrient  = transform.forward;
 	}
 
 	private void MInitRigidbody ()
@@ -33,44 +42,38 @@ public class Sensor_Noireaude : MonoBehaviour
 		rigidbody.isKinematic = true;
 	}
 
-	private void MUpdateDictionnary ()
+	public void MUpdateVectors ()
 	{
-		_m_echoRepulsion.Clear();
-		_m_echoOrientation.Clear();
-		_m_echoAttraction.Clear();
-		compteurDico = 0;
+		MinitVectors ();
 
 		foreach (KeyValuePair<int, GameObject> kvp in _m_echoGlobal)
 		{
 			Vector3 monVector = kvp.Value.transform.position - transform.position;
 			float distance = monVector.x*monVector.x + monVector.y*monVector.y + monVector.z*monVector.z;
 
-			float m_fieldRepulsionCARRE = m_fieldRepulsion*m_fieldRepulsion;
-			float m_fieldOrientationCARRE = m_fieldOrientation*m_fieldOrientation;
-			float m_fieldAttractionCARRE = m_fieldAttraction*m_fieldAttraction;
+			float m_fieldRepulsionCARRE   = (m_fieldGlobal*m_PourcentageRepulsion)*(m_fieldGlobal*m_PourcentageRepulsion);
+			float m_fieldOrientationCARRE = (m_fieldGlobal*m_PourcentageOrientation)*(m_fieldGlobal*m_PourcentageOrientation);
+			float m_fieldAttractionCARRE  = m_fieldGlobal*m_fieldGlobal;
 
 
 			if (distance <= m_fieldRepulsionCARRE)
 			{
-				_m_echoRepulsion [kvp.Key] = kvp.Value;
-				compteurDico += 1;
+				Vector3 repulsion = monVector;
+				float NormeCARRE = repulsion.x*repulsion.x + repulsion.y*repulsion.y + repulsion.z*repulsion.z;
+				repulsion.Normalize();
+				
+				_m_VectRepuls += repulsion *(1-NormeCARRE)*m_factRepuls;
 			}
 
-			if (compteurDico<=_m_DictionnaryLimits)
+			if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
 			{
 
-				if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
-				{
+				_m_VectRepuls += transform.forward;
+			}
 
-					_m_echoOrientation [kvp.Key] = kvp.Value;
-					compteurDico += 1;
-				}
-
-				if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
-				{
-					_m_echoAttraction [kvp.Key] = kvp.Value;
-					compteurDico += 1;
-				}
+			if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
+			{
+				_m_VectAttract += (monVector*(-1f));
 			}
 		}
 
@@ -78,9 +81,7 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	private void MUpdateFields ()
 	{
-		(collider as SphereCollider).radius = m_fieldAttraction;
-		m_fieldOrientation = m_fieldAttraction*m_PourcentageOrientation;
-		m_fieldRepulsion = m_fieldAttraction*m_PourcentageRepulsion;
+		(collider as SphereCollider).radius = m_fieldGlobal;
 	}
 
 
@@ -112,39 +113,26 @@ public class Sensor_Noireaude : MonoBehaviour
 
 	}
 
-	public void MChangeDictionnaryLimits (int _value)
-	{
-		_m_DictionnaryLimits = _value;
-	}
 
-
-	public Dictionary<int,GameObject> Get_echoAttraction
+	public Vector3 Get_VectorAttraction
 	{
 		get 
 		{
-			return _m_echoAttraction;
+			return _m_VectAttract;
 		}
 	}
-	public Dictionary<int,GameObject> Get_echoOrientation
+	public Vector3 Get_VectorRepulsion
 	{
 		get 
 		{
-			return _m_echoOrientation;
+			return _m_VectRepuls;
 		}
 	}
-	public Dictionary<int,GameObject> Get_echoRepulsion
+	public Vector3 Get_VectorOrientation
 	{
 		get 
 		{
-			return _m_echoRepulsion;
-		}
-	}
-
-	public void M2D ()
-	{
-		if (transform.position.y != 0)
-		{
-			Vector3 newPosition = new Vector3 (transform.position.x, 0, transform.position.z);
+			return _m_VectOrient;
 		}
 	}
 	// Use this for initialization
@@ -159,7 +147,7 @@ public class Sensor_Noireaude : MonoBehaviour
 	{
 
 		MUpdateFields ();
-		MUpdateDictionnary ();
+		//MUpdateVectors ();
 
 
 

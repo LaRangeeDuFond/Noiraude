@@ -33,6 +33,8 @@ public class Groupe_Noireaude : MonoBehaviour {
 	public float m_mcoefOrient = 1f;
 	private float _mpreviouscoefAIM = 1f;
 	private float _mpreviouscoefOrient = 1f;
+	private float m_mRepulsFact = 1f;
+	private float _mpreviousRepulsFact = 1f;
 
 	//private List<Thread> m_TreadListe = new List<Thread> ();
 	//private int compteurThread = 0;
@@ -128,7 +130,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 		}
 		
 	}
-
+	/*
 	void MVerify_Send_DicoLimit ()
 	{
 		if (_m_previousDictionnaryLimits != m_DictionnaryLimits)
@@ -146,7 +148,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 			monScript.MSetDictionnaryLimits (_value);
 		}
 		
-	}
+	}*/
 	
 	void MMAJ_noiraude(int group, int nb_group)
 	{
@@ -181,7 +183,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 		MUpdatecoefOrient ();
 		MUpdatecoefAim ();
 		MVerify_Send_Pourcentages ();
-		MVerify_Send_DicoLimit ();
+		//MVerify_Send_DicoLimit ();
 
 
 		MMAJ_noiraude(m_MAJ_compteur,m_nbMAJ_group);

@@ -36,7 +36,6 @@ public class Brain_Noireaude : MonoBehaviour {
 	{
 		activ3D = value;
 	}
-
 	public void MSetcoefAIM (float value)
 	{
 		m_mcoefAIM = value;
@@ -65,13 +64,8 @@ public class Brain_Noireaude : MonoBehaviour {
 		_sensor.MChangePoucentages (_field,_value);
 	}
 
-	public void MSetDictionnaryLimits (int _value)
-	{
-		_sensor.MChangeDictionnaryLimits (_value);
-	}
 
-
-
+	/*
 	private Vector3 MComputeRepulse ()
 	{
 		Vector3 VecteurRepulse = Vector3.zero;
@@ -113,7 +107,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		return AimCenterMass;
 
-	}
+	}*/
 
 	private Vector3 McomputeAimCible ()
 	{
@@ -126,11 +120,10 @@ public class Brain_Noireaude : MonoBehaviour {
 	{
 		_m_Velocity = Vector3.zero;
 		//Vector3 _m_Cible = McomputeAimCenterMass();
-		Vector3 _m_Repulse = MComputeRepulse ();
-		Vector3 _m_Attract = MComputeAttract ();
+		Vector3 _m_Repulse = _sensor.Get_VectorRepulsion;
+		Vector3 _m_Attract = _sensor.Get_VectorAttraction;
 		//Vector3 _m_AimCible = McomputeAimCible ();
 		_m_Cible.Normalize();
-		_m_Repulse.Normalize();
 		_m_Attract.Normalize();
 		//_m_AimCible.Normalize();
 
@@ -155,7 +148,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	}
 	
-
+	/*
 	private Vector3 MComputeAverageForward ()
 	{
 		Vector3 VecteurRotation = Vector3.zero;
@@ -168,11 +161,11 @@ public class Brain_Noireaude : MonoBehaviour {
 		VecteurRotation.Normalize ();
 		//Debug.Log ("Normalize ou diviser");
 		return VecteurRotation;
-	}
+	}*/
 
 	private Quaternion MAlignAll ()
 	{
-		Vector3 vectAverageForward = MComputeAverageForward ();
+		Vector3 vectAverageForward = _sensor.Get_VectorOrientation;
 		Vector3 vectAim = _m_Cible - transform.position;
 		Vector3 allrotation = (vectAverageForward*m_mcoefOrient) + (vectAim*m_mcoefAIM);
 		Vector3 vectAxis = Vector3.Cross (transform.forward,allrotation);
@@ -186,7 +179,7 @@ public class Brain_Noireaude : MonoBehaviour {
 	private Quaternion MAlignForward()
 	{
 
-		Vector3 vectAverageForward = MComputeAverageForward ();
+		Vector3 vectAverageForward = _sensor.Get_VectorOrientation;
 		Vector3 vectAxis = Vector3.Cross (transform.forward,vectAverageForward);
 		float angle = Vector3.Angle (transform.forward, vectAverageForward);
 		if (angle > 10f){angle = 10f;}
@@ -239,6 +232,7 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		if (m_misaAJour)
 		{
+			_sensor.MUpdateVectors ();
 			MRotation ();
 			MComputeVelocity ();
 			m_misaAJour = false;
