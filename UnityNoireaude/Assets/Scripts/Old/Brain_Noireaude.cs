@@ -16,7 +16,9 @@ public class Brain_Noireaude : MonoBehaviour {
 
 	private Vector3 _m_Velocity = new Vector3 ();
 
-	public float m_Speed = 100f;
+	public float m_Speed = 1f;
+	public float Fm_Speed = 1f;
+	public float Rm_Speed = 1f;
 	private bool m_misaAJour = false;
 	private float m_mcoefAIM = 1f;
 	private float m_mcoefOrient = 1f;
@@ -122,6 +124,7 @@ public class Brain_Noireaude : MonoBehaviour {
 		//Vector3 _m_Cible = McomputeAimCenterMass();
 		Vector3 _m_Repulse = _sensor.Get_VectorRepulsion;
 		Vector3 _m_Attract = _sensor.Get_VectorAttraction;
+
 		//Vector3 _m_AimCible = McomputeAimCible ();
 		_m_Cible.Normalize();
 		_m_Attract.Normalize();
@@ -132,19 +135,22 @@ public class Brain_Noireaude : MonoBehaviour {
 		_m_Velocity += _m_Cible/100f;*/
 
 		// repulsion
-		_m_Velocity += _m_Repulse*0.01f;
+		_m_Velocity += _m_Repulse;
 
 		// attraction
-		_m_Velocity += _m_Attract*0.002f;
+		//_m_Velocity += _m_Attract*0.002f;
 
 		//attraction Cible
 		//_m_Velocity += _m_AimCible*0.0125f;
 
 		//vecteur forward
-		_m_Velocity += transform.forward*0.0125f;
+		Vector3 _forward = transform.position;
+		_forward *= Fm_Speed;
+
+		_m_Velocity += _forward;
 
 		//division du vecteur
-		_m_Velocity *= 0.33f;
+		//_m_Velocity *= 0.33f;
 
 	}
 	
@@ -200,23 +206,10 @@ public class Brain_Noireaude : MonoBehaviour {
 
 		Vector3 nouvellePosition = new Vector3 ();
 		nouvellePosition.x = transform.position.x + (_m_Velocity.x)*m_Speed*Time.deltaTime;
-		if (activ3D==true)
-		{
-			nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
-		}
+		nouvellePosition.y = transform.position.y + (_m_Velocity.y)*m_Speed*Time.deltaTime;
 		nouvellePosition.z = transform.position.z + (_m_Velocity.z)*m_Speed*Time.deltaTime;
 
 		transform.position = nouvellePosition;
-
-
-		/*
-		//contrainte Y
-		if(transform.position.y!=0f)
-		{
-			Vector3 pos = transform.position;
-			pos.y = 0f;
-			transform.position = pos;
-		}*/
 	}
 
 
@@ -233,6 +226,9 @@ public class Brain_Noireaude : MonoBehaviour {
 		if (m_misaAJour)
 		{
 			_sensor.MUpdateVectors ();
+			Vector3 m_distCible = transform.position -_m_Cible;
+			float _distCarre = (m_distCible.x*m_distCible.x) + (m_distCible.y * m_distCible.y) + (m_distCible.z * m_distCible.z);
+			Fm_Speed = m_Speed*((_distCarre)+1f)*0.000000000001f;
 			MRotation ();
 			MComputeVelocity ();
 			m_misaAJour = false;

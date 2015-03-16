@@ -13,7 +13,7 @@ public class Sensor_Noireaude : MonoBehaviour
 	private Vector3 _m_VectOrient          = Vector3.zero;
 	private float m_PourcentageOrientation = 0.66f;
 	private float m_PourcentageRepulsion   = 0.33f;
-	private float m_factRepuls             = 5f;
+	private float m_factRepuls             = 2f;
 
 
 	private Dictionary<int,GameObject> _m_echoGlobal = new Dictionary<int, GameObject> ();
@@ -62,7 +62,7 @@ public class Sensor_Noireaude : MonoBehaviour
 				float NormeCARRE = repulsion.x*repulsion.x + repulsion.y*repulsion.y + repulsion.z*repulsion.z;
 				repulsion.Normalize();
 				
-				_m_VectRepuls += repulsion *(1-NormeCARRE)*m_factRepuls;
+				_m_VectRepuls += repulsion *(1-Mathf.Sqrt(NormeCARRE))*m_factRepuls;
 			}
 
 			if (distance <= m_fieldOrientationCARRE && distance > m_fieldRepulsionCARRE)
@@ -70,7 +70,7 @@ public class Sensor_Noireaude : MonoBehaviour
 
 				_m_VectRepuls += transform.forward;
 			}
-
+			 
 			if (distance <= m_fieldAttractionCARRE && distance > m_fieldOrientationCARRE)
 			{
 				_m_VectAttract += (monVector*(-1f));
