@@ -6,7 +6,7 @@ using System.Threading;
 public class Groupe_Noireaude : MonoBehaviour {
 
 
-	public Vector3 _m_CenterOfMassGlobal = new Vector3 ();
+	public Vector3 _m_CenterOfMassGlobal = Vector3.zero;
 	public int _m_NbNoireaudes = 2;
 
 
@@ -20,10 +20,7 @@ public class Groupe_Noireaude : MonoBehaviour {
 	public GameObject m_cible;
 	public int m_nbMAJ_group = 3;
 	private int m_MAJ_compteur = 1;
-	public float m_Speed = 100f;
-
-	public int m_DictionnaryLimits = 50;
-	private int _m_previousDictionnaryLimits = 0;
+	public float m_Speed = 10f;
 
 	public float m_PoucentageOrientation = 0.66f;
 	public float m_PoucentageRepulsion = 0.33f;
