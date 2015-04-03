@@ -65,7 +65,7 @@ public class Sensor_Noireaude : MonoBehaviour
 			float m_fieldOrientation = (m_fieldGlobal*m_PourcentageOrientation);
 			float m_fieldAttraction  = m_fieldGlobal;
 
-            if ((int)(Vector3.Angle(-transform.forward, (transform.position - kvp.Value.transform.position))) < (360 - _m_FieldOfView)*0.5f)
+            if ((int)(Vector3.Angle(-transform.forward, (transform.position - kvp.Value.transform.position))) > (360 - _m_FieldOfView)*0.5f)
             {
                 if (distance <= m_fieldRepulsion)
                 {
@@ -77,7 +77,7 @@ public class Sensor_Noireaude : MonoBehaviour
                 if (distance <= m_fieldOrientation && distance > m_fieldRepulsion)
                 {
 
-                    _m_VectOrient += transform.forward;
+                    _m_VectOrient += kvp.Value.transform.forward;
                 }
 
                 if (distance <= m_fieldAttraction && distance > m_fieldOrientation)

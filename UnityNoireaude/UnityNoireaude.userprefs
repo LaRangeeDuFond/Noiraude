@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Old\Brain_Noireaude.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\Cours\TempReel\NatureMorte\Assets\Standard Assets\Effects\ImageEffects\Scripts\VignetteAndChromaticAberration.cs">
     <Files>
-      <File FileName="Assets\Scripts\Old\Sensor_Noireaude.cs" Line="72" Column="5" />
-      <File FileName="Assets\Scripts\Old\Groupe_Noireaude.cs" Line="85" Column="4" />
-      <File FileName="Assets\Scripts\Old\Brain_Noireaude.cs" Line="9" Column="30" />
+      <File FileName="..\..\..\Cours\TempReel\NatureMorte\Assets\script\PointFlame.cs" Line="13" Column="3" />
+      <File FileName="..\..\..\Cours\TempReel\NatureMorte\Assets\Standard Assets\Effects\ImageEffects\Scripts\VignetteAndChromaticAberration.cs" Line="101" Column="128" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
